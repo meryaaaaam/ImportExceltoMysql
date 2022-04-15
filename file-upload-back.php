@@ -137,7 +137,7 @@ foreach($objExcel->getWorksheetIterator() as $worksheet)
 				//cylindres
 			if($cyl_row == null  )
 	    	{  
-				$insert="INSERT INTO `cylindres`( `nom`  ) VALUES ( '$eng_cyl' , '$eng_desc'  )";
+				$insert="INSERT INTO `cylindres`( `nom` , `description`  ) VALUES ( '$eng_cyl' , '$eng_desc'  )";
 				$insert_q=mysqli_query($con,$insert);
 	
 				$cyl_req="SELECT *  FROM cylindres WHERE nom='$eng_cyl'";	
