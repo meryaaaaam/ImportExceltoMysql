@@ -1,5 +1,5 @@
 <?php
-$con=mysqli_connect('localhost','root','','import_excel');
+$con=mysqli_connect('localhost','root','','genieducredit_crm');
 
 if(mysqli_connect_errno())
 {

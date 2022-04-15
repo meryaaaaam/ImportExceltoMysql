@@ -317,31 +317,33 @@ foreach($objExcel->getWorksheetIterator() as $worksheet)
 	
 				}
 
-			$insertqry="INSERT INTO `vehicule_back`
+			$insertqry="INSERT INTO `vehicule`
 			(
 				/* `d_id`
 			 , `dealer_name`, `dealer_address`, `dealer_city`, `dealer_region`, `dealer_postal`,`dealer_phone`,*/
 
-			`v_id`,`remote_date_modified`,`remote_date_entered`,`stock`,`vin`,`status`,`year`,`make`,`model` ,`trim`,`body`,
-			`doors`,`drive`,`transmission`,`fuel`,`eng_cyl`,`eng_desc`,`extcolour`,`intcolour`,`is_certified`,`is_demo`,`is_new`,
-			`category`,`odometer`,`warranty`,`passenger`,`standard_price`,`photo`,`option_xl`,`special_mentions`,`in_service_date` ,
-			`external_url`,
-			`main_photo`,`regular_price` ,`sale_price` ,`video_en`  ,`video_fr`, `utilisateur_id` , `make_id` , `model_id` 
-			,`carrosserie_id` , `transmission_id` , `carburant_id` , 	`cylindres_id` , `traction_id` , `id_status`
-			 
+			`marque_id`, `stock`,`vin` , `modele_id` , `category_id` ,  `status_id`,`carrosserie_id`,`transmission_id` ,`carburant_id` ,
+			`traction_id` ,
+			`cylindres_id` , 
+			`km` , 
+			`couleurexterieur` ,`couleurinterieur` ,`portes` ,`passagers` ,
+			`prixdetail`,`prixwholesale`,`annee`,`garentie`,
+			`utilisateur_id` , `trim`, 
+			`options_xl`,`special_mentions`,`in_service_date` ,
+			`external_url`,`photo`,
+			`main_photo`,`video_en`  ,`video_fr`
+			
 			) VALUES 
 			(
-				/*'$d_id'
-			 ,
+			'$id_make', '$stock','$vin', '$id_model' , '$id_cat', '$id_status','$id_body' , '$id_trans' 
+			, '$id_carb', '$id_traction' , '$id_cyl' , '$odometer' 
+			,'$extcolour','$intcolour','$doors' ,'$passenger'
+			,'$regular_price','$sale_price','$year','$warranty',
+				'$id' ,
 			
-			'$dealer_name','$dealer_address','$dealer_city','$dealer_region', '$dealer_postal','$dealer_phone',*/
-			'$v_id','$remote_date_modified','$remote_date_entered','$stock','$vin','$status',
-			'$year','$make','$model','$trim','$body','$doors','$drive','$transmission','$fuel','$eng_cyl',
-			'$eng_desc','$extcolour','$intcolour','$is_certified','$is_demo','$is_new','$category','$odometer',
-			/*'$warranty','$passenger','$standard_price','$photo','$option','$special_mentions','$in_service_date',*/
-			'$warranty','$passenger','$standard_price','$photo','$op','$special','$in_service_date',
-			'$external_url','$main_photo','$regular_price','$sale_price', '$video_en','$video_fr' ,'$id' ,'$id_make' , '$id_model' , 
-			'$id_body' , '$id_trans' , '$id_carb' , '$id_cyl' , '$id_traction' , '$id_status'
+			'$trim' ,'$op','$special','$in_service_date',
+			'$external_url' , '$photo' ,'$main_photo', '$video_en','$video_fr'
+			  
 			)";
 			$insertres=mysqli_query($con,$insertqry);
 			
