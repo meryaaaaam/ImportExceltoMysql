@@ -95,86 +95,8 @@ foreach($objExcel->getWorksheetIterator() as $worksheet)
 			$trans_req="SELECT id,nom  FROM transmission WHERE nom='$transmission'";	
 	        $trans_res=mysqli_query($con,$trans_req);
 			$trans_row = $trans_res -> fetch_assoc() ;
-
-				//carburant
-			$carb_req="SELECT id,nom  FROM carburant WHERE nom='$fuel'";	
-			$carb_res=mysqli_query($con,$carb_req);
-			$carb_row = $carb_res -> fetch_assoc() ;
-
-				//cylindres
-			$cyl_req="SELECT *  FROM cylindres WHERE nom='$eng_cyl'";	
-	        $cyl_res=mysqli_query($con,$cyl_req);
-			$cyl_row = $cyl_res -> fetch_assoc() ;
 			 
-				//traction
-			$traction_req="SELECT id,nom  FROM traction WHERE nom='$drive'";	
-			$traction_res=mysqli_query($con,$traction_req);
-			$traction_row = $traction_res -> fetch_assoc() ;
- 
-
-
-
-				//traction
-			if($traction_row == null  )
-	    	{  
-				$insert="INSERT INTO `traction`( `nom`  ) VALUES ( '$drive' )";
-				$insert_q=mysqli_query($con,$insert);
-	
-				$traction_req="SELECT id,nom  FROM traction WHERE nom='$drive'";	
-				$traction_res=mysqli_query($con,$traction_req);
-				$traction_row = $traction_res -> fetch_assoc() ;
-
-				$id_traction=$traction_row['id'] ;
-			 
-	    	}
-		    else {
-						if($traction_row['nom'] == $drive)
 			
-						$id_traction=$traction_row['id'] ;
-			}
-
-
-				//cylindres
-			if($cyl_row == null  )
-	    	{  
-				$insert="INSERT INTO `cylindres`( `nom` , `description`  ) VALUES ( '$eng_cyl' , '$eng_desc'  )";
-				$insert_q=mysqli_query($con,$insert);
-	
-				$cyl_req="SELECT *  FROM cylindres WHERE nom='$eng_cyl'";	
-	            $cyl_res=mysqli_query($con,$cyl_req);
-			    $cyl_row = $cyl_res -> fetch_assoc() ;
-
-				$id_cyl=$cyl_row['id'] ;
-			 
-	    	}
-		    else {
-						if($cyl_row['nom'] == $eng_cyl)
-			
-						$id_cyl=$cyl_row['id'] ;
-			}
-
-
-        	//carburant
-			if($carb_row == null  )
-	    	{  
-				$insert="INSERT INTO `carburant`( `nom` ) VALUES ( '$fuel'  )";
-				$insert_q=mysqli_query($con,$insert);
-	
-				$carb_req="SELECT id,nom  FROM carburant WHERE nom='$fuel'";	
-			    $carb_res=mysqli_query($con,$carb_req);
-			    $carb_row = $carb_res -> fetch_assoc() ;
-
-				$id_carb=$carb_row['id'] ;
-			 
-	    	}
-		    else {
-						if($carb_row['nom'] == $fuel)
-			
-						$id_carb=$carb_row['id'] ;
-			}
-
-
-
 			if($trans_row == null  )
 	    	{  
 				$inserttrans="INSERT INTO `transmission`( `nom` ) VALUES ( '$transmission'  )";
@@ -306,7 +228,7 @@ foreach($objExcel->getWorksheetIterator() as $worksheet)
 			`category`,`odometer`,`warranty`,`passenger`,`standard_price`,`photo`,`option_xl`,`special_mentions`,`in_service_date` ,
 			`external_url`,
 			`main_photo`,`regular_price` ,`sale_price` ,`video_en`  ,`video_fr`, `utilisateur_id` , `make_id` , `model_id` 
-			,`carrosserie_id` , `transmission_id` , `carburant_id` , 	`cylindres_id` , `traction_id`
+			,`carrosserie_id` , `transmission_id`
 			 
 			) VALUES 
 			(
@@ -320,7 +242,7 @@ foreach($objExcel->getWorksheetIterator() as $worksheet)
 			/*'$warranty','$passenger','$standard_price','$photo','$option','$special_mentions','$in_service_date',*/
 			'$warranty','$passenger','$standard_price','$photo','$op','$special','$in_service_date',
 			'$external_url','$main_photo','$regular_price','$sale_price', '$video_en','$video_fr' ,'$id' ,'$id_make' , '$id_model' , 
-			'$id_body' , '$id_trans' , '$id_carb' , '$id_cyl' , '$id_traction'
+			'$id_body' , ''
 			)";
 			$insertres=mysqli_query($con,$insertqry);
 			
