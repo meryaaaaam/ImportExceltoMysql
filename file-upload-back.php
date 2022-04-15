@@ -111,8 +111,29 @@ foreach($objExcel->getWorksheetIterator() as $worksheet)
 			$traction_res=mysqli_query($con,$traction_req);
 			$traction_row = $traction_res -> fetch_assoc() ;
  
+	       //status
+          	$status_req="SELECT *  FROM status";	
+	        $status_res=mysqli_query($con,$status_req);
+	        $status_row = $status_res -> fetch_assoc() ;
 
+	        //traction
+        	if( $is_new == TRUE  )
+        	{  
+	    	 
+	    	  $status_req="SELECT id  FROM status WHERE nom='Neuf'";	
+	    	  $status_res=mysqli_query($con,$status_req);
+	    	  $status_row = $status_res -> fetch_assoc() ;
 
+	    	  $id_status=$status_row['id'] ;
+	 
+	        }
+	        else {
+				$status_req="SELECT id  FROM status WHERE nom='Usagé'";	
+	    	    $status_res=mysqli_query($con,$status_req);
+	    	    $status_row = $status_res -> fetch_assoc() ;
+
+	    	    $id_status=$status_row['id'] ;
+	         }
 
 				//traction
 			if($traction_row == null  )
@@ -306,7 +327,7 @@ foreach($objExcel->getWorksheetIterator() as $worksheet)
 			`category`,`odometer`,`warranty`,`passenger`,`standard_price`,`photo`,`option_xl`,`special_mentions`,`in_service_date` ,
 			`external_url`,
 			`main_photo`,`regular_price` ,`sale_price` ,`video_en`  ,`video_fr`, `utilisateur_id` , `make_id` , `model_id` 
-			,`carrosserie_id` , `transmission_id` , `carburant_id` , 	`cylindres_id` , `traction_id`
+			,`carrosserie_id` , `transmission_id` , `carburant_id` , 	`cylindres_id` , `traction_id` , `id_status`
 			 
 			) VALUES 
 			(
@@ -320,7 +341,7 @@ foreach($objExcel->getWorksheetIterator() as $worksheet)
 			/*'$warranty','$passenger','$standard_price','$photo','$option','$special_mentions','$in_service_date',*/
 			'$warranty','$passenger','$standard_price','$photo','$op','$special','$in_service_date',
 			'$external_url','$main_photo','$regular_price','$sale_price', '$video_en','$video_fr' ,'$id' ,'$id_make' , '$id_model' , 
-			'$id_body' , '$id_trans' , '$id_carb' , '$id_cyl' , '$id_traction'
+			'$id_body' , '$id_trans' , '$id_carb' , '$id_cyl' , '$id_traction' , '$id_status'
 			)";
 			$insertres=mysqli_query($con,$insertqry);
 			
