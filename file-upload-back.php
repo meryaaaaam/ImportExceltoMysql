@@ -420,7 +420,7 @@ foreach($objExcel->getWorksheetIterator() as $worksheet)
 			`numinventaire`, `liquidation`, 
 			`utilisateur_id` ,`media_id`, 
 			 `trim`, 
-			`options_xl`,`special_mentions`,`in_service_date` ,
+			`optionsxl`,`specialmentions`,`in_service_date` ,
 			`external_url`,`video_en`  ,`video_fr`
 			
 			) VALUES 
