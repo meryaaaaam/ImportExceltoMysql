@@ -68,6 +68,9 @@ foreach($objExcel->getWorksheetIterator() as $worksheet)
 		$special = $con-> real_escape_string( $special_mentions );
 		$op = $con-> real_escape_string( $option );
 
+		
+		 
+
 
 
 
@@ -313,7 +316,8 @@ foreach($objExcel->getWorksheetIterator() as $worksheet)
 		
 		   if($make_row == null  )
 	    	{  
-				$insertmake="INSERT INTO `fabriquant`( `nom` ) VALUES ( '$make'  )";
+				$insertmake="INSERT INTO `fabriquant`( `nom` , `actifcrm`, `actifservice` , `actifaccueil` , `lien`, `description`) 
+				VALUES ( '$make' , '1' , '1' , '1' , '#' , ' ' ,   )";
 
 				$insert_make=mysqli_query($con,$insertmake);
 	
@@ -369,8 +373,8 @@ foreach($objExcel->getWorksheetIterator() as $worksheet)
 				$id=$row1['id'] ;
 
 
-				$insertconmar="INSERT INTO `concessionnairemarchand`(   `utilisateur_id`  )
-				 VALUES ( '$id' )";
+				$insertconmar="INSERT INTO `concessionnairemarchand`(`utilisateur_id` ,`actif`,`siteweb` ,`liendealertrack`,`description`)
+				 VALUES ( '$id' , '1' , '#' , '#' , ' ' )";
 	
 				$insert_conmar=mysqli_query($con,$insertconmar);
 
@@ -387,6 +391,20 @@ foreach($objExcel->getWorksheetIterator() as $worksheet)
 	
 				}
 
+				if($warranty) {$ex_war = 1 ;} else {$ex_war = 0 ;}
+
+				
+			if ($special)
+			{    $fin= 1 ;
+				 if (stristr($special,"permettez") ) { $char = stristr($special,"permettez"); }
+				 else if( stristr($special,"tous nos") ) {$char = stristr($special,"tous nos");}
+				 else { 	$char = $special  ;}
+			 
+			 }else 
+			 {
+				 $char = ''  ; $fin= 0 ;
+			 }
+
 			$insertqry="INSERT INTO `vehicule`
 			(
 				/* `d_id`
@@ -394,29 +412,30 @@ foreach($objExcel->getWorksheetIterator() as $worksheet)
 
 			`marque_id`, `stock`,`vin` , `modele_id` , `category_id` ,  `status_id`,`carrosserie_id`,`transmission_id` ,`carburant_id` ,
 			`traction_id` ,
-			`cylindres_id` , `moteur_id`,
+			`cylindres_id` , `moteur_id`, `actif`,
 			`km` , 
 			`couleurexterieur` ,`couleurinterieur` ,`portes` ,`passagers` ,
-			`prixdetail`,`prixwholesale`,`annee`, `garentie`, 
+			`prixdetail`,`prixwholesale`,`annee`, 
+			`disponiblefinance`, `financement`, `disponiblegarentie`, `garentie`, 
 			`numinventaire`, `liquidation`, 
 			`utilisateur_id` ,`media_id`, 
 			 `trim`, 
 			`options_xl`,`special_mentions`,`in_service_date` ,
-			`external_url`,`photo`,
-			`mainphoto`,`video_en`  ,`video_fr`
+			`external_url`,`video_en`  ,`video_fr`
 			
 			) VALUES 
 			(
 			'$id_make', '$stock','$vin', '$id_model' , '$id_cat', '$id_status','$id_body' , '$id_trans' 
-			, '$id_carb', '$id_traction' , '$id_cyl' , '$id_mot',
+			, '$id_carb', '$id_traction' , '$id_cyl' , '$id_mot', '1', 
 			 '$odometer' 
 			,'$extcolour','$intcolour','$doors' ,'$passenger'
-			,'$regular_price','$sale_price','$year','$warranty',
+			,'$regular_price','$sale_price','$year', 
+			'$fin','$char','$ex_war','$warranty',
 			'$v_id' , '0',
 				'$id' , '$id_media',
 			
 			'$trim' ,'$op','$special','$in_service_date',
-			'$external_url' , '$photo' ,'$main_photo', '$video_en','$video_fr'
+			'$external_url' , '$video_en','$video_fr'
 			  
 			)";
 	   $data_veh="SELECT * FROM vehicule WHERE vin='$vin'";	
