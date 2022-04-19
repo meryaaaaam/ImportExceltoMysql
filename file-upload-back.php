@@ -69,9 +69,7 @@ foreach($objExcel->getWorksheetIterator() as $worksheet)
 		$op = $con-> real_escape_string( $option );
 
 
-		    $data="SELECT id,nom,nomutilisateur  FROM utilisateur WHERE nom='$dealer_name'";	
-			$result=mysqli_query($con,$data);
-			$row1 = $result -> fetch_assoc() ;
+
 
 
 		    $make_req="SELECT id,nom  FROM  fabriquant WHERE nom='$make'";	
@@ -116,7 +114,37 @@ foreach($objExcel->getWorksheetIterator() as $worksheet)
 	        $status_res=mysqli_query($con,$status_req);
 	        $status_row = $status_res -> fetch_assoc() ;
 
-	        //traction
+
+			
+	       //main_photo medias
+		   $medias_req="SELECT *  FROM medias WHERE lien = '$main_photo'   ";	
+		   $medias_res=mysqli_query($con,$medias_req);
+		   $medias_row = $medias_res -> fetch_assoc() ;
+
+				//medias
+				if($medias_row == null  )
+				{  
+					$nom_photo = ''.$make .'-'.$model .'-'.$extcolour;
+
+					$insert="INSERT INTO `medias`( `nom` ,`lien`  ) VALUES ( '$nom_photo','$main_photo' )";
+					$insert_q=mysqli_query($con,$insert);
+		
+					$medias_req="SELECT *  FROM medias WHERE lien = '$main_photo'  ";	
+					$medias_res=mysqli_query($con,$medias_req);
+					$medias_row = $medias_res -> fetch_assoc() ;
+	
+					$id_media=$medias_row['id'] ;
+				 
+				}
+				else {
+							if($medias_row['lien'] == $main_photo)
+				
+							$id_media=$medias_row['id'] ;
+				}
+
+
+
+		   	        //traction
         	if( $is_new == TRUE  )
         	{  
 	    	 
@@ -134,6 +162,9 @@ foreach($objExcel->getWorksheetIterator() as $worksheet)
 
 	    	    $id_status=$status_row['id'] ;
 	         }
+
+
+ 
 
 				//traction
 			if($traction_row == null  )
@@ -174,6 +205,29 @@ foreach($objExcel->getWorksheetIterator() as $worksheet)
 						$id_cyl=$cyl_row['id'] ;
 			}
 
+			//moteur
+			$mot_req="SELECT *  FROM moteur WHERE nom='$eng_desc'";	
+			$mot_res=mysqli_query($con,$mot_req);
+			$mot_row = $mot_res -> fetch_assoc() ;
+
+					//moteur
+			if($mot_row == null  )
+				{  
+						$insert="INSERT INTO `moteur`( `nom` ) VALUES (  '$eng_desc'  )";
+						$insert_q=mysqli_query($con,$insert);
+			
+						$mot_req="SELECT *  FROM moteur WHERE nom='$eng_desc'";	
+						$mot_res=mysqli_query($con,$mot_req);
+						$mot_row = $mot_res -> fetch_assoc() ;
+		
+						$id_mot=$mot_row['id'] ;
+					 
+				}
+				else {
+								if($mot_row['nom'] == $eng_desc)
+					
+								$id_mot=$mot_row['id'] ;
+				}
 
         	//carburant
 			if($carb_row == null  )
@@ -296,11 +350,15 @@ foreach($objExcel->getWorksheetIterator() as $worksheet)
 						$id_model=$model_row['id'] ;
 			}
 
-
+		    $data="SELECT id,nom,nomutilisateur  FROM utilisateur WHERE nom='$dealer_name'";	
+			$result=mysqli_query($con,$data);
+			$row1 = $result -> fetch_assoc() ;
 
 			if($row1 == null )
 			{  
-				$insertuser="INSERT INTO `utilisateur`(   `nom`, `telephone`, `nomutilisateur` ) VALUES ( '$dealer_name','$dealer_phone' , '$dealer_name' )";
+				$insertuser="INSERT INTO `utilisateur`(   `nom`, `telephone`, `nomutilisateur` , `addresse`, `ville`, `region`,`postal` )
+				 VALUES ( '$dealer_name','$dealer_phone' , '$dealer_name' , '$dealer_address','$dealer_city' ,
+				  '$dealer_region' , '$dealer_postal' )";
 	
 				$insert_ures=mysqli_query($con,$insertuser);
 	
@@ -309,6 +367,18 @@ foreach($objExcel->getWorksheetIterator() as $worksheet)
 	
 				$row1 = $result -> fetch_assoc() ;
 				$id=$row1['id'] ;
+
+
+				$insertconmar="INSERT INTO `concessionnairemarchand`(   `utilisateur_id`  )
+				 VALUES ( '$id' )";
+	
+				$insert_conmar=mysqli_query($con,$insertconmar);
+
+
+				$insertcon="INSERT INTO `concessionnaire`(    `id` , `concessionnairemarchand_id`   )
+				 VALUES ( '$d_id','$id' )";
+	
+				$insert_con=mysqli_query($con,$insertcon);
 			
 				 
 			}
@@ -324,29 +394,70 @@ foreach($objExcel->getWorksheetIterator() as $worksheet)
 
 			`marque_id`, `stock`,`vin` , `modele_id` , `category_id` ,  `status_id`,`carrosserie_id`,`transmission_id` ,`carburant_id` ,
 			`traction_id` ,
-			`cylindres_id` , 
+			`cylindres_id` , `moteur_id`,
 			`km` , 
 			`couleurexterieur` ,`couleurinterieur` ,`portes` ,`passagers` ,
-			`prixdetail`,`prixwholesale`,`annee`,`garentie`,
-			`utilisateur_id` , `trim`, 
+			`prixdetail`,`prixwholesale`,`annee`, `garentie`, 
+			`numinventaire`, `liquidation`, 
+			`utilisateur_id` ,`media_id`, 
+			 `trim`, 
 			`options_xl`,`special_mentions`,`in_service_date` ,
 			`external_url`,`photo`,
-			`main_photo`,`video_en`  ,`video_fr`
+			`mainphoto`,`video_en`  ,`video_fr`
 			
 			) VALUES 
 			(
 			'$id_make', '$stock','$vin', '$id_model' , '$id_cat', '$id_status','$id_body' , '$id_trans' 
-			, '$id_carb', '$id_traction' , '$id_cyl' , '$odometer' 
+			, '$id_carb', '$id_traction' , '$id_cyl' , '$id_mot',
+			 '$odometer' 
 			,'$extcolour','$intcolour','$doors' ,'$passenger'
 			,'$regular_price','$sale_price','$year','$warranty',
-				'$id' ,
+			'$v_id' , '0',
+				'$id' , '$id_media',
 			
 			'$trim' ,'$op','$special','$in_service_date',
 			'$external_url' , '$photo' ,'$main_photo', '$video_en','$video_fr'
 			  
 			)";
-			$insertres=mysqli_query($con,$insertqry);
-			
+	   $data_veh="SELECT * FROM vehicule WHERE vin='$vin'";	
+	   $result_veh=mysqli_query($con,$data_veh);
+	   $veh_row = $result_veh -> fetch_assoc() ;
+	   
+       if ($veh_row == null )
+       {  
+	       $insertres=mysqli_query($con,$insertqry);
+
+		   $data_veh="SELECT * FROM vehicule WHERE vin='$vin'";	
+		   $result_veh=mysqli_query($con,$data_veh);
+		   $veh_row = $result_veh -> fetch_assoc() ;
+
+		   $v_id = $veh_row['id'] ;
+		    //galerie photos
+	    	$photos_req="SELECT *  FROM galerie_vehicule";	
+		    $photos_res=mysqli_query($con,$photos_req);
+		    $photos_row = $photos_res -> fetch_assoc() ;
+		
+		    //galerie
+					 
+		    $nom_photo = ''.$make .'-'.$model .'-'.$extcolour;
+		    $image = explode(',', $photo);
+		    $i = 0 ;
+		    foreach ($image as $image ) 
+		    {
+				$photos_req="SELECT *  FROM galerie_vehicule";	
+		    $photos_res=mysqli_query($con,$photos_req);
+		    $photos_row = $photos_res -> fetch_assoc() ;
+
+			  $nom_photo = ''.$make .'-'.$model .'-'.$extcolour;
+			  $i =$i+1 ; 
+			  $nom_photo .= '-'.$i;
+						
+		      $insert="INSERT INTO `galerie_vehicule` ( `nom` ,`lien` ,`vehicule_id`) VALUES ('$nom_photo','$image' , '$v_id' )";
+		      $insert_q=mysqli_query($con,$insert);
+			 
+		    }
+       }
+					  
 
 
 
