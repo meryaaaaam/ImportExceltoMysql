@@ -379,7 +379,7 @@ foreach($objExcel->getWorksheetIterator() as $worksheet)
 				$insert_conmar=mysqli_query($con,$insertconmar);
 
 
-				$insertcon="INSERT INTO `concessionnaire`(    `id` , `concessionnairemarchand_id`   )
+				$insertcon="INSERT INTO `concessionnaire`(`id`,`concessionnairemarchand_id`  )
 				 VALUES ( '$d_id','$id' )";
 	
 				$insert_con=mysqli_query($con,$insertcon);
@@ -420,7 +420,7 @@ foreach($objExcel->getWorksheetIterator() as $worksheet)
 			`numinventaire`, `liquidation`, 
 			`utilisateur_id` ,`media_id`, 
 			 `trim`, 
-			`optionsxl`,`specialmentions`,`in_service_date` ,
+			`optionsxl`,`specialmentions`,`in_service_date`,
 			`external_url`,`video_en`  ,`video_fr`
 			
 			) VALUES 
