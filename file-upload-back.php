@@ -317,9 +317,9 @@ foreach($objExcel->getWorksheetIterator() as $worksheet)
 		   if($make_row == null  )
 	    	{  
 				$insertmake="INSERT INTO `fabriquant`( `nom` , `actifcrm`, `actifservice` , `actifaccueil` , `lien`, `description`) 
-				VALUES ( '$make' , '1' , '1' , '1' , '#' , ' ' ,   )";
+				VALUES ( '$make' , '1' , '1' , '1' , '#' , ' '   )";
 
-				$insert_make=mysqli_query($con,$insertmake);
+				$insert_make1=mysqli_query($con,$insertmake);
 	
 				$data_make="SELECT id,nom  FROM fabriquant WHERE nom='$make'";	
 				$result_make=mysqli_query($con,$data_make);

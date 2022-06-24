@@ -1,5 +1,5 @@
 <?php
-$con=mysqli_connect('localhost','root','','genieducredit_crm');
+$con=mysqli_connect('localhost','root','','genieducredit_crm2');
 
 if(mysqli_connect_errno())
 {
